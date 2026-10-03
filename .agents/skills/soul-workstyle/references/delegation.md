@@ -1,31 +1,47 @@
-# 分出去的工作
+# Handing work off
 
-范围外、值得单独做的事，和一项工作收尾后的下一阶段，不在当前任务里顺手做，以免当前改动变大、旧上下文混进新任务。分出去有两条路：自己开后台子代理，或者用 `spawn_task` 出一张卡片等用户点开。默认开子代理，因为用户不想为每件小事手动点一次；这是用户的要求，开之前不用再问。
+Out-of-scope work worth doing separately, and the next phase after a piece of work is finished, are not done in
+passing inside the current task, so the current change stays small and old context stays out of the new task. There
+are two routes: start a background sub-agent yourself, or put out a `spawn_task` card for the user to open. Default to
+the sub-agent, because the user does not want to click for every small thing; this is the user's standing request, so
+do not ask before starting one.
 
-## 选哪条路
+## Which route
 
-开子代理（Agent 工具，`isolation: "worktree"`，后台运行），当这件事：
+Start a sub-agent (Agent tool, `isolation: "worktree"`, in the background) when the work:
 
-- 能独立做完，改动小，审查看改动摘要和检查结果就够
-- 能在当前会话结束前做完，因为子代理随当前会话一起停
+- can be finished independently, is a small change, and can be reviewed from a change summary and check results
+- can be finished before the current session ends, since the sub-agent stops with it
 
-出卡片，当这件事：
+Put out a card when the work:
 
-- 要跑很久，或改动大到需要逐行审查
-- 用户可能想单独盯着、中途插话，或者方向要用户拍板
-- 出现在当前会话快收尾的时候
+- runs long, or changes enough to need line-by-line review
+- is something the user may want to watch or steer, or needs the user to decide its direction
+- comes up as the current session is wrapping up
 
-两种工具都没有时，在汇报末尾给出能贴进新会话的 prompt。用户明确说在当前会话继续，就照做。
+With neither tool, end the report with a prompt that can be pasted into a new session. If the user says to continue
+in the current session, do that.
 
-## 开子代理
+## Starting a sub-agent
 
-1. 写 prompt：目标、相关文件路径、已做完的部分、还没定的决定。子代理看不到当前对话，prompt 要能独立读懂
-2. 让它在自己的分支上提交、不合并 main，最后只回几行报告：改了什么、检查结果、分支名、没做完的。它读的文件和中间输出留在它自己的上下文里，进当前会话的只有 prompt 和这份报告
-3. 开出来后用 `show_pane` 打开 tasks 面板，并用一句话告诉用户开了什么，因为子代理不会在侧边栏单独出现
-4. 用户想改它的方向时，用 SendMessage 转告它
-5. 收到报告后先看 `git diff --stat` 和检查输出，改动小或有疑点时才读具体 diff，以免审查本身占掉当前会话的上下文
-6. 审查通过，按 [wrap-up.md](wrap-up.md) 合并到 main 再汇报；不通过，说明问题在哪，由用户决定重做还是改出卡片
+1. Write the prompt: goal, relevant file paths, what is already done, decisions still open. The sub-agent cannot see
+   this conversation, so the prompt must stand alone
+2. Have it commit on its own branch without merging main, at the end of every phase so a cut-off run keeps its
+   work, and reply with a few lines only: what changed, check results, branch name, what is unfinished, then a last
+   line starting `DONE:`, `PARTIAL:` or `STUCK:`. A brief for an existing worktree, rather than one the Agent tool
+   isolates, rewrites every path to that worktree and runs git as `git -C <worktree>`; a sub-agent given main-clone
+   paths commits there. Its file reads and intermediate output stay in its own context; only the
+   prompt and that report enter the current session
+3. Once started, open the tasks pane with `show_pane` and tell the user in one sentence what was started, because a
+   sub-agent does not show up in the sidebar
+4. When the user wants to change its direction, relay it with SendMessage
+5. On its report, check its branch log and that main is untouched before trusting the summary; look at
+   `git diff --stat` and the check output first; read the diff itself only when it is small
+   or something looks off, so the review does not eat the current session's context
+6. Review passed: merge into main per [wrap-up.md](wrap-up.md), then report. Failed: say where the problem is and let
+   the user choose between redoing it and a card
 
-## 出卡片
+## Putting out a card
 
-卡片的 prompt 和子代理的一样要能独立读懂。卡片标题写要做的事，说明里写为什么现在提出。
+The card's prompt is written like a sub-agent's, standing alone. Its title and description are for the user, so they
+are in Chinese: the title says what is to be done, the description says why it comes up now.

@@ -1,21 +1,34 @@
-# 收尾
+# Finishing
 
-## 合并到 main
+## Merge into main
 
-在分支上做完的工作，检查通过后不等用户开口就提交、合并到 main、删掉分支，因为没合并的分支在用户看来还没做完。这条优先于"只在用户要求时 commit"的默认做法。
+Work finished on a branch is committed, merged into main and its branch deleted once checks pass, without waiting
+for the user to ask, because an unmerged branch looks unfinished to the user. This takes precedence over the default
+of committing only when asked.
 
-1. 跑项目要求的全部检查，通过后再往下
-2. 只暂存自己改过的路径（`git add <路径>`，不用 `git add -A`），以免带上别的会话的修改；然后提交
-3. 把 main 快进到这个分支：
-   - 在主克隆里：留在分支上执行 `git fetch . <分支>:main`，它只接受快进，也不用检出 main
-   - 在 worktree 里：main 由主克隆检出，执行 `git -C <主克隆> merge --ff-only <分支>`
-   - 快进被拒，说明 main 已经前进：`git switch -c <新分支> main`，`git cherry-pick` 这些提交，重跑检查，再快进。不用 rebase，它在这里会被权限规则拒绝
-   - 主克隆里有别的会话对同一批文件的未提交修改：不动 main，也不用 `git update-ref` 绕过，汇报待合并的分支
-4. 删掉分支：主克隆里先 `git switch main`，再 `git branch -d <分支>`；在 worktree 里分支正被检出，删不掉就留着，在汇报里说明
-5. 汇报 main 上的提交号和分支是否已删；只在用户要求时 push
+1. Run every check the project requires; continue only when they pass
+2. Stage only the paths you changed (`git add <path>`, not `git add -A`), so other sessions' changes stay out; commit
+3. Fast-forward main to the branch:
+   - In the main clone: stay on the branch and run `git fetch . <branch>:main`, which accepts only a fast-forward
+     and does not check main out
+   - In a worktree: main is checked out by the main clone; run `git -C <main clone> merge --ff-only <branch>`
+   - Fast-forward refused means main has moved. In a worktree the app made, sync with `sync_with_base_branch`,
+     resolve conflicts, commit, then fast-forward; otherwise `git switch -c <new branch> main`, `git cherry-pick` the
+     commits, rerun the checks, then fast-forward. No rebase: it rewrites the existing branch; a cherry-pick onto a
+     new branch does not
+   - The main clone holds another session's uncommitted changes to the same files: leave main alone, do not bypass
+     it with `git update-ref`, and report the branch waiting to be merged
+4. Delete the branch: in the main clone `git switch main`, then `git branch -d <branch>`; in a worktree the branch is
+   checked out and cannot be deleted, so leave it and say so in the report
+5. Report the commit on main and whether the branch was deleted; push only when the user asks
 
-每条 Git 命令单独执行。把 switch、add、commit、merge 用 `&&` 串成一条，容易被权限规则整条拒掉。多行 commit message 用多个 `-m`，或写进 scratchpad 里的文件再 `git commit -F <文件>`。
+Along the way, commit each step that can be checked on its own as soon as it passes, not one large commit at the
+end: small commits review, bisect and revert cleanly, and a cut-off session loses nothing.
 
-## 下一阶段
+Run each Git command on its own, not chained with `&&`, so a failing step is obvious. A multi-line commit message
+uses several `-m`, or a file in the scratchpad with `git commit -F <file>`.
 
-一项工作收尾后，下一阶段不在当前上下文里接着做，按 [delegation.md](delegation.md) 分出去。
+## Next phase
+
+After a piece of work is finished, the next phase is not continued in the current context; hand it off per
+[delegation.md](delegation.md).

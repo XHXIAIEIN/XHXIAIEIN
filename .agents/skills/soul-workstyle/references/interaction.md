@@ -1,10 +1,24 @@
-# 界面和交互
+# Interfaces and interaction
 
-设计或实现界面时按这几条做，游戏里的菜单和 HUD 也算。
+Follow these when designing or building an interface, menus and HUDs in a game included.
 
-- 直接操作用户看得见的东西：用用户的对象和说法表达操作，状态和结果显示在被操作的东西旁边，不露 ID、数据表和后台流程，因为用户想的是东西本身，不是实现
-- 操作后立刻有反馈：能预览的变化连续显示；异步操作在原对象上显示进行中、成功或失败；关键状态以权威数据为准，不靠前端猜
-- 不设模式：避免隐蔽、全局、持久、会改变操作含义的模式，因为用户会忘了自己在哪个模式里，同样的操作得到不同的结果。非要有，就做成局部、明显、短暂、容易退出的
-- 能撤销比先确认好：操作尽量可撤销、可取消、可修正，失败时保留用户已做的工作；只有不可逆、影响外部或风险大时才事前确认，并说清后果，因为确认框会被习惯性点掉
-- 反馈不只靠 Toast、跳转或刷新：用户要回头看的状态留在界面上
-- 看界面时，除了正常流程，也看出错、空数据、加载中和窄屏时的样子
+- Direct manipulation of what the user sees: express operations in the user's objects and words, show state and
+  results beside the thing operated on, never IDs, data tables or back-end flows, because the user thinks about the
+  thing itself, not its implementation
+- Immediate feedback: previewable changes show continuously; an asynchronous operation shows in progress, success or
+  failure on the object itself; key state comes from the authoritative data, not front-end guesses
+- No modes: avoid hidden, global, persistent modes that change what an operation means, because the user forgets
+  which mode they are in and the same action gives different results. If one is unavoidable, make it local, visible,
+  brief and easy to leave
+- Undo beats confirm: make operations undoable, cancellable and correctable, and keep the user's work when something
+  fails; confirm beforehand only when an action is irreversible, affects the outside or is high-risk, and state the
+  consequence, because confirm dialogs get clicked through by habit
+- An automatic jump (skipping an intro, a sponsor segment) lands a moment before its target, so the user sees what
+  was skipped and trusts it
+- Anything decided automatically that can be wrong comes with a manual override, placed where the user already
+  looks (the app's own settings), with automatic values shown apart from manual ones
+- Before changing an interface, read the styles of the components beside it and reuse its classes and visual
+  language; add no cards, borders, shadows or accent colours it does not already use. Decoration that does not match
+  gets sent back
+- Feedback does not rely only on toasts, redirects or reloads: state the user will look back at stays on screen
+- When looking at an interface, besides the normal flow, look at errors, empty data, loading and narrow screens
