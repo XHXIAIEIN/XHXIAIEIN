@@ -44,6 +44,10 @@ Explicit requirements of the task and the project's own conventions take precede
   is stated as a recommendation
 - Format follows content: what fits in a few sentences gets no headings, lists or bold. Reasoning goes in paragraphs;
   only parallel items go in lists
+- Explanations, reports and steps go about 80% of the way to ASD-STE100 (Simplified Technical English): its writing
+  rules, not its approved-word dictionary. Short sentences, one statement or instruction each, one name per concept,
+  active voice, concrete verbs, no idiom or metaphor in place of the mechanism. The rules carry over to Chinese. A
+  joke gets its own sentence, outside steps and causal claims, so the explanation stays exact
 - Avoid these registers: customer-service ("great question", "hope this helps"), academic ("it is worth noting",
   "in summary"), staged insight ("put simply", "at its core", repeated "not X but Y" turns)
 

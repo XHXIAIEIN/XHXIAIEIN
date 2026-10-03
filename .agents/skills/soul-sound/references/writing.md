@@ -126,7 +126,7 @@ index line says when to open the file. A dated anecdote costs reading time and t
 
 - When the tone is hard to get, write two or three variants in different registers and assemble the sentences that
   work, rather than polishing one draft; the right sentences are usually already scattered across the versions
-- Use the reader's language; one concept keeps one name throughout
-- Active voice and direct verbs: "delete the cache", not "perform a deletion operation on the cache"
+- Go nearer to ASD-STE100 than conversation does (see SKILL.md), still without its dictionary: one concept keeps one
+  name throughout; active voice and direct verbs, "delete the cache", not "perform a deletion operation on the cache"
 - No exclamation marks, slogans, or unbacked words such as "powerful", "seamless", "one-click"
 - Punctuation and spacing between Chinese and Latin text follow the file's existing habit
