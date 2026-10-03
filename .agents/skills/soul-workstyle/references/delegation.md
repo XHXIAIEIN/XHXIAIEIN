@@ -1,13 +1,10 @@
 # Handing work off
 
-If out-of-scope work is worth doing separately, or if the next phase follows finished work, do not do it inside the
-current task. The current change then stays small, and old context stays out of the new task. There are two routes:
-
-- Start a background sub-agent yourself
-- Create a `spawn_task` card that the user opens
-
-Use the sub-agent by default, because the user does not want to click for every small thing. This is a standing
-request of the user, so start the sub-agent without asking first.
+When out-of-scope work is worth doing separately, or finished work leads to a next phase, do not do it inside the
+current task. That keeps the current change small and keeps old context out of the new task. There are two routes:
+start a background sub-agent yourself, or create a `spawn_task` card for the user to open. Default to the sub-agent,
+because the user does not want to click for every small thing; this is the user's standing request, so do not ask
+before you start one.
 
 ## Which route
 
@@ -27,28 +24,29 @@ says to continue in the current session, continue there.
 
 ## Starting a sub-agent
 
-The file reads and intermediate output of the sub-agent stay in its own context. Only the prompt and the report enter
+The sub-agent's file reads and intermediate output stay in its own context, and only the prompt and its report enter
 the current session.
 
-1. Write the prompt: the goal, the relevant file paths, what is already done, and the decisions that are still open.
-   The sub-agent cannot see this conversation, so the prompt must stand alone
-2. Tell the sub-agent to commit on its own branch and not to merge into main. Tell it to commit at the end of every
-   phase, so a run that stops early keeps its work. Tell it to report in a few lines only: what changed, the check
-   results, the branch name and what is unfinished. Tell it to start the last line with `DONE:`, `PARTIAL:` or
-   `STUCK:`
-3. If the sub-agent works in an existing worktree, not in one that the Agent tool isolates, change every path in the
-   prompt to that worktree. Tell the sub-agent to run git as `git -C <worktree>`. A sub-agent that gets paths in the
-   main clone commits in the main clone
-4. After the start, open the tasks pane with `show_pane`. Tell the user in one sentence what you started, because a
-   sub-agent does not appear in the sidebar
-5. If the user wants to change the direction of the sub-agent, send the change with SendMessage
-6. When the report comes, check the branch log, and check that main is unchanged, before you trust the report. Look
+1. Write the prompt with the goal, the relevant file paths, what is already done and the decisions that are still
+   open. The sub-agent cannot see this conversation, so the prompt must stand alone
+2. In the prompt, tell the sub-agent to:
+   - commit on its own branch without merging into main
+   - commit at the end of every phase, so that a run that stops early keeps its work
+   - report in a few lines only: what changed, the check results, the branch name and what is unfinished
+   - start the last line of the report with `DONE:`, `PARTIAL:` or `STUCK:`
+3. If the sub-agent works in an existing worktree rather than one that the Agent tool isolates, rewrite every path in
+   the prompt to that worktree. Also tell it to run git as `git -C <worktree>`, because a sub-agent that gets paths in
+   the main clone commits in the main clone
+4. Once it has started, open the tasks pane with `show_pane` and tell the user in one sentence what you started,
+   because a sub-agent does not appear in the sidebar
+5. When the user wants to change the sub-agent's direction, pass the change on with SendMessage
+6. When the report arrives, check the branch log and check that main is untouched before you trust the report. Look
    at `git diff --stat` and the check output first. Read the diff itself only when it is small or something looks
-   wrong, so the review uses little of the context of the current session
-7. If the review passes, merge into main as [wrap-up.md](wrap-up.md) says, then report. If it fails, say where the
-   problem is, and let the user choose between a new attempt and a card
+   wrong, so that the review uses little of the current session's context
+7. If the review passes, merge into main as [wrap-up.md](wrap-up.md) describes, then report to the user. If it fails,
+   say where the problem is and let the user choose between another attempt and a card
 
 ## Creating a card
 
-Write the prompt of the card like the prompt of a sub-agent: it must stand alone. The title and the description are
-for the user, so write them in Chinese. The title says what to do. The description says why the work arises now.
+Write the card's prompt like a sub-agent's prompt, so that it stands alone. Its title and description are for the
+user, so write them in Chinese: the title says what is to be done, and the description says why the work arises now.
