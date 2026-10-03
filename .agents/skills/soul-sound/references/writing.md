@@ -1,70 +1,132 @@
-# 写留在项目里的文字
+# Writing that stays in a project
 
-读者是以后使用或维护项目的人或模型。他们没参加过这次会话，只需要知道现在是什么、为什么这样。每句话都问一次：删掉它，读者的理解、操作或维护判断会变吗？不会就删。
+The reader is whoever later uses or maintains the project, person or model. They were not in this session; they need
+to know what is and why. Ask of every sentence: without it, would the reader's understanding, actions or maintenance
+decisions change? If not, delete it.
 
-## 只写现在
+## Only the present
 
-历史归 git、changelog 和决策记录，其他地方只写当前状态。
+History belongs to git, the changelog and decision records; everywhere else describes the current state.
 
-- 不用相对于某次改动的词，比如 `现在改为`、`不再`、`新增`、`已修复`、`新版`，因为读者没见过旧版
-- 不提对话和任务：`按要求`、`review 中提到`、`之前的方案`
-- 被纠正后，从最终态重写受影响的标题、开头、标签、文件名和说明，不在原句上补括号、同义词、`注意` 或合规声明；先查最显眼的地方：文档标题、开篇、PR 标题、caption、文件名
-- 没采用的方案，只在它牵涉架构约束、兼容性或安全，或能拦住以后的误改时才写，写成约束（`这里不能用 X，因为 Y`），不写成经过
-- 没做完的事写进汇报，不在文件里留 `TODO`
+- No words relative to a change, such as "now", "no longer", "new", "fixed", "updated": the reader never saw the old
+  version, so they are noise
+- No mention of the conversation or the task: "as requested", "raised in review", "the earlier approach", "the user said"
+- After a correction, rewrite the affected titles, openings, labels, file names and descriptions from the final
+  state; do not patch the old sentence with parentheses, synonyms, "note" or compliance disclaimers. Check the most
+  visible places first: document title, opening, PR title, caption, file name, unpushed commit messages
+- A rejected option is written only when it touches an architectural constraint, compatibility or security, or would
+  stop a later mistaken change; write it as a constraint ("X cannot be used here because Y"), not as a history
+- Unfinished work goes in the report, not as a `TODO` in the file
 
-没参加过这次会话的读者，从任何一处都看不出曾经有过另一个方案。
+A reader who was not in this session cannot tell from anywhere that another option once existed.
 
-## 注释
+## Comments
 
-注释写代码表达不了的东西：意图、约束、陷阱和原因。
+A comment gives a step or a piece of data a short name, so the reader sees at a glance what it does.
 
-- 一句话，原因放不进这一句时才加第二句
-- 说领域里的事，不说机制：写 `让玩家左转`，不写 `把角度设为 Self.Angle - 90`；写 `跳过已下载的文件`，不写 `路径存在就 continue`
-- 原因写成同一句的从句，用 `以免`、`好让`、`因为`：`把角度取整，以免留下 89.99999999999999 这样的值`
-- 名字已经说清的不注释；一段代码要读完才知道在做什么时，在它上方写一句
-- 分支写这是哪种情况，else 写剩下的情况：`如果缓存已过期，就重新下载索引`、`否则，结束滑行`
-- 变量和配置项写它装的是什么，带单位或范围，布尔写成 `是否……`：`玩家转身所需的秒数`、`屏幕是否被触摸过`
-- 长代码块在步骤之间写一个动词短语当路标，块仍是一块，不为放注释拆函数
-- 函数的说明也是一句话；参数只补签名说不清的单位、范围、副作用和异常
-- 不复述代码，不写 `标准`、`干净`、`健壮` 这类自我评价，简单文件不画分节线
+```js
+// Screen touched
+if (touch.isTouching) {
+  // Round the angle
+  angle = Math.round(angle);
+  // Player turns left
+  player.angle -= 90;
+}
 
-## 文档与 README
+// Destroy a frame later
+// Destroyed in the same frame, the collision event cannot read the object
+await nextFrame();
+obj.destroy();
+```
 
-- 介绍工具或概念的页面，第一句说它是什么、解决什么问题
-- 按读者要做的事分节：安装、配置、使用、构建，不照搬内部模块的结构
-- 步骤用祈使句，一步一个动作；条件行为写成 `如果 X，会 Y`
-- 命令、路径、配置项和界面名称写之前对照实现，能跑的先跑一遍
-- 会随数据或版本变的事实，比如版本号、条目数、测试总数、一次统计的结果，不抄进正文：写成行为，指向产生它的文件、命令或手册
-- 结构跟着篇幅走：短文不加标题，不满篇加粗，两三项不做表格；并列的东西用列表，因果和推理写成段落
-- 需要一大段说明才能用对的东西，先考虑改它本身
+Not this:
 
-## UI 文案
+```js
+// If the screen has been touched, round the angle so that no value like 89.99999999999999 is left
+if (touch.isTouching) {
+  // get x
+  const x = pos.x;
+}
+```
 
-- 用用户看得见的对象和界面上的名字，不露 ID、字段名和内部流程
-- 按钮用动词，说会发生什么；提示写出按键或入口：`按空格开始`
-- 错误信息说发生了什么、用户能怎么处理，不责怪用户
+- Comments follow the language the file already uses, a new file follows the project; the examples show the form only
+- Write the shortest phrase ("Round the angle", "Player turns left"), without filler words or "so that ..." clauses
+- Name the domain event, not the mechanism: "Player turns left", not "set angle to Self.Angle - 90"; "Skip downloaded
+  files", not "continue if the path exists"
+- Only when code looks redundant or odd because of a quirk, trap or constraint, and someone might remove it, add the
+  reason on its own line, like "Destroy a frame later" above
+- What a name already says needs no comment; above code that has to be read in full to know what it does, write a
+  short phrase
+- A branch names its case, `else` names the rest: "Cache expired: download the index again", "Otherwise stop sliding"
+- A variable or setting says what it holds, with unit or range; a boolean says the fact it stands for: "Player turn
+  time in seconds", "Screen touched"
+- In a long block, a short phrase between steps works as a signpost; the block stays one block, not split into
+  functions to make room for comments
+- A function's description is also a phrase; parameters only add what the signature leaves unclear: unit, range, side
+  effects, exceptions
+- Do not translate code line by line: one name per step, not one comment per line. No self-praise ("standard",
+  "clean", "robust"); no section rules in a simple file
 
-## Commit message 与 PR
+## Docs and README
 
-- 跟随仓库已有的语言和格式，写之前看一眼 `git log`
-- 标题说这次改了什么，不写 `cleanup`、`misc fixes`
-- 正文只写 diff 看不出的动机、约束和影响，不列文件清单
-- PR 描述写最终行为，以及 reviewer 从 diff 恢复不出的取舍；不套 Summary、Changes、Test plan 模板，没合入过的中间状态不写
+- A page introducing a tool or concept says in its first sentence what it is and what problem it solves
+- Sections follow what the reader does (install, configure, use, build), not the internal module structure
+- Steps are imperative, one action each; conditional behaviour is "If X, Y happens"
+- Check commands, paths, settings and interface names against the implementation before writing them; run what can
+  be run
+- Facts that change with data or versions (version numbers, entry counts, test totals, the result of one count) stay
+  out of the text: describe the behaviour and point to the file, command or manual that produces it
+- Structure follows length: no headings in a short text, no bold everywhere, no table for two or three items; parallel
+  items in lists, cause and reasoning in paragraphs
+- Something that needs a long explanation to be used correctly: consider changing the thing itself
 
-## 给模型读的文字
+## UI copy
 
-AGENTS.md、CLAUDE.md、提示词和 skill 的读者是模型。模型会按字面执行，所以：
+- Use the objects the user sees and the names on screen, never IDs, field names or internal flows
+- Buttons are verbs saying what will happen; hints name the key or the entry point: "Press Space to start"
+- Error messages say what happened and what the user can do, without blaming the user
 
-- 规则带上原因，模型才能在没写到的情况里判断边界
-- 死数字、`必须`、`永远` 和全大写只留给真正的硬约束，否则会被过度执行
-- 禁止项旁边写该怎么做
-- 例子会被照抄：换不同领域举例，或说明它示范的是哪一点
-- 模型默认就会做的不写；能由脚本、检查或测试保证的交给它们，不写成每次都要读的文字
-- skill 的 description 写什么时候用，它决定这份说明会不会被加载
+## Commit messages and PRs
 
-## 措辞
+- Follow the repository's existing language and format; look at `git log` before writing
+- The title says what changed, never "cleanup" or "misc fixes"
+- The body holds only what the diff does not show: motivation, constraints, impact; no file list
+- A PR description states the final behaviour and the trade-offs a reviewer cannot recover from the diff; no Summary,
+  Changes, Test plan template, no intermediate states that were never merged
+- Never write `#N` or `owner/repo#N` in a commit message, issue or PR text, however it is passed (`-m`, `--body`,
+  `gh`): GitHub posts it to that issue's timeline for good. Name the issue in words or as the full URL in backticks.
+  A document inside a repository may use the short form; only commits, issues and PRs are parsed
 
-- 用读者的语言；同一个概念始终用同一个名字
-- 中文用主动句，动词直接：写 `删除缓存`，不写 `对缓存进行删除操作`；少用 `进行`、`该`、`其`
-- 不用感叹号、口号，以及 `强大`、`无缝`、`一键` 这类没有事实撑腰的词
-- 标点和中英文之间的空格跟随文件已有的习惯
+## Text models read
+
+AGENTS.md, CLAUDE.md, prompts, skills and memory files are read by models, which follow them literally, so:
+
+- Write them in English (see the language table in SKILL.md); a project's own rule wins
+- Give rules their reasons, so the model can judge the cases the text does not cover
+- Keep hard numbers, "must", "never" and capitals for real hard constraints; anything else gets over-applied
+- Next to a prohibition, say what to do instead
+- Examples get copied: vary the domain, or say which point the example shows
+- A prompt for review, checking or verification gets plain instructions and permission to say "not sure", no expert
+  persona: a persona makes the model sound certain rather than be right
+- Leave out what the model does by default; what a script, check or test can guarantee goes there, not into text read
+  every time
+- Guidance meant for small models goes where they act: the good shape as the default in a helper, and a line in a
+  tool's output that says what to write, not more prose they never open. The first line of a tool's output is the
+  whole answer to a small model, so a denial printed before the hit is read as the answer. A guard for a small model
+  must not cost a capable one context: a line printed once when it matters passes, permanent prose every agent
+  carries does not
+- A skill's description says when to use it; it decides whether the instructions get loaded
+
+A memory file holds the rule, fact or pointer and why it holds. The first line is what to do; `Why:` is one or two
+sentences of reason, stated as a reason, not as an incident. Leave out dates, session events and how it was learned
+("on <date> the user found ...", "I tested ... and was corrected"); open items are listed without "as of" dates. The
+index line says when to open the file. A dated anecdote costs reading time and tells the agent nothing it acts on.
+
+## Wording
+
+- When the tone is hard to get, write two or three variants in different registers and assemble the sentences that
+  work, rather than polishing one draft; the right sentences are usually already scattered across the versions
+- Use the reader's language; one concept keeps one name throughout
+- Active voice and direct verbs: "delete the cache", not "perform a deletion operation on the cache"
+- No exclamation marks, slogans, or unbacked words such as "powerful", "seamless", "one-click"
+- Punctuation and spacing between Chinese and Latin text follow the file's existing habit
