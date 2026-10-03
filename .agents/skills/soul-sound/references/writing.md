@@ -1,28 +1,45 @@
-# Writing that stays in a project
+# Project text
 
-The reader is whoever later uses or maintains the project, person or model. They were not in this session; they need
-to know what is and why. Ask of every sentence: without it, would the reader's understanding, actions or maintenance
-decisions change? If not, delete it.
+Project text is text that stays in a project. Its reader is a person or an agent who later uses or maintains the
+project. That reader was not in this session. The reader needs to know what the project is and does, and why. For
+each sentence, ask: without it, would the reader understand, act or maintain the project differently? If not, delete
+the sentence.
+
+## Wording
+
+- Apply all the sentence rules of ASD-STE100 in the "Sentences" section of SKILL.md. Conversation applies them at
+  about 80%. Project text applies all of them, still without the approved-word dictionary
+- Say what a thing is, what it does and how to use it. Do not list what it lacks or does not need ("no vector index,
+  nothing to install"). A list of absent things makes the reader think of them. Say what the thing runs on instead
+  ("runs on the files of the clone"). Keep a real prohibition, with the action to take instead
+- Do not use exclamation marks, slogans or claims without evidence, such as "powerful", "seamless", "one-click"
+- For punctuation and spacing between Chinese and Latin text, follow the existing habit of the file
+- If the tone is hard to get, write two or three variants in different registers. Then take the sentences that work
+  from each variant. This works better than many edits of one draft, because each variant usually has some of the
+  right sentences
 
 ## Only the present
 
-History belongs to git, the changelog and decision records; everywhere else describes the current state.
+Git, the changelog and decision records hold the history. All other text describes the current state.
 
-- No words relative to a change, such as "now", "no longer", "new", "fixed", "updated": the reader never saw the old
-  version, so they are noise
-- No mention of the conversation or the task: "as requested", "raised in review", "the earlier approach", "the user said"
-- After a correction, rewrite the affected titles, openings, labels, file names and descriptions from the final
-  state; do not patch the old sentence with parentheses, synonyms, "note" or compliance disclaimers. Check the most
-  visible places first: document title, opening, PR title, caption, file name, unpushed commit messages
-- A rejected option is written only when it touches an architectural constraint, compatibility or security, or would
-  stop a later mistaken change; write it as a constraint ("X cannot be used here because Y"), not as a history
-- Unfinished work goes in the report, not as a `TODO` in the file
+- Do not use words that are relative to a change, such as "now", "no longer", "new", "fixed", "updated". The reader
+  did not see the old version, so these words tell the reader nothing
+- Describe the result as it is. Do not mention the conversation or the task: "as requested", "raised in review", "the
+  earlier approach", "the user said"
+- After a correction, rewrite the affected titles, openings, labels, file names and descriptions from the final state.
+  Do not patch the old sentence with parentheses, synonyms, a "note" or a compliance disclaimer. Check the most
+  visible places first: the document title, the opening, the PR title, captions, file names and unpushed commit
+  messages
+- Write about a rejected option only if it touches an architectural constraint, compatibility or security, or if it
+  prevents a later wrong change. Write it as a constraint ("X cannot be used here because Y"), not as history
+- Put unfinished work in the report, not as a `TODO` in the file
 
-A reader who was not in this session cannot tell from anywhere that another option once existed.
+The result: a reader who was not in this session cannot see that another option existed.
 
 ## Comments
 
-A comment gives a step or a piece of data a short name, so the reader sees at a glance what it does.
+A comment gives a short name to a step or to a piece of data. The reader then sees what the code does without
+reading all of it.
 
 ```js
 // Screen touched
@@ -49,84 +66,89 @@ if (touch.isTouching) {
 }
 ```
 
-- Comments follow the language the file already uses, a new file follows the project; the examples show the form only
-- Write the shortest phrase ("Round the angle", "Player turns left"), without filler words or "so that ..." clauses
+- Write comments in the language that the file already uses. A new file follows the project. The examples show only
+  the form
+- Write the shortest phrase ("Round the angle", "Player turns left"). Leave out filler words and "so that ..." clauses
 - Name the domain event, not the mechanism: "Player turns left", not "set angle to Self.Angle - 90"; "Skip downloaded
   files", not "continue if the path exists"
-- Only when code looks redundant or odd because of a quirk, trap or constraint, and someone might remove it, add the
-  reason on its own line, like "Destroy a frame later" above
-- What a name already says needs no comment; above code that has to be read in full to know what it does, write a
-  short phrase
-- A branch names its case, `else` names the rest: "Cache expired: download the index again", "Otherwise stop sliding"
-- A variable or setting says what it holds, with unit or range; a boolean says the fact it stands for: "Player turn
-  time in seconds", "Screen touched"
-- In a long block, a short phrase between steps works as a signpost; the block stays one block, not split into
-  functions to make room for comments
-- A function's description is also a phrase; parameters only add what the signature leaves unclear: unit, range, side
-  effects, exceptions
-- Do not translate code line by line: one name per step, not one comment per line. No self-praise ("standard",
-  "clean", "robust"); no section rules in a simple file
+- If code looks redundant or odd because of a quirk, a trap or a constraint, and someone might remove it, add the
+  reason on its own line, as "Destroy a frame later" does above. Other code gets no reason line
+- If a name already says what the code does, add no comment. Above code that the reader must read in full to
+  understand, write a short phrase
+- In a branch, name its case. In `else`, name the rest: "Cache expired: download the index again", "Otherwise stop
+  sliding"
+- For a variable or a setting, say what it holds, with its unit or range. For a boolean, say the fact that it stands
+  for: "Player turn time in seconds", "Screen touched"
+- In a long block, put a short phrase before each step as its heading. Keep the block as one block. Do not split it
+  into functions only to make room for comments
+- Write the description of a function as a phrase too. For parameters, add only what the signature does not make
+  clear: unit, range, side effects, exceptions
+- Do not translate code line by line. Give one name to each step, not one comment to each line
+- State facts about the code. Do not praise it ("standard", "clean", "robust")
+- Do not add section rules to a simple file
 
 ## Docs and README
 
-- A page introducing a tool or concept says in its first sentence what it is and what problem it solves
-- Sections follow what the reader does (install, configure, use, build), not the internal module structure
-- Steps are imperative, one action each; conditional behaviour is "If X, Y happens"
-- Check commands, paths, settings and interface names against the implementation before writing them; run what can
-  be run
-- Facts that change with data or versions (version numbers, entry counts, test totals, the result of one count) stay
-  out of the text: describe the behaviour and point to the file, command or manual that produces it
-- Structure follows length: no headings in a short text, no bold everywhere, no table for two or three items; parallel
-  items in lists, cause and reasoning in paragraphs
-- Something that needs a long explanation to be used correctly: consider changing the thing itself
+- On a page that introduces a tool or a concept, make the first sentence say what it is and what problem it solves
+- Order the sections by what the reader does (install, configure, use, build), not by the internal module structure
+- Write steps in the imperative, with one action in each step. Write conditional behaviour as "If X, Y happens"
+- Before you write a command, a path, a setting or an interface name, check it against the implementation. Run what
+  you can run
+- Keep facts that change with data or versions out of the text: version numbers, entry counts, test totals, the
+  result of one count. Describe the behaviour, and point to the file, command or manual that gives the fact
+- Let the length set the structure. A short text gets no headings. Do not put bold everywhere. Do not make a table
+  for two or three items. Put parallel items in lists, and causes and reasoning in paragraphs
+- If a thing needs a long explanation before people can use it correctly, consider a change to the thing itself
 
 ## UI copy
 
-- Use the objects the user sees and the names on screen, never IDs, field names or internal flows
-- Buttons are verbs saying what will happen; hints name the key or the entry point: "Press Space to start"
-- Error messages say what happened and what the user can do, without blaming the user
+- Use the objects that the user sees and the names on the screen. Do not show IDs, field names or internal flows
+- Write a button as a verb that says what will happen. Make a hint name the key or the entry point: "Press Space to
+  start"
+- Make an error message say what happened and what the user can do. Do not blame the user
 
 ## Commit messages and PRs
 
-- Follow the repository's existing language and format; look at `git log` before writing
-- The title says what changed, never "cleanup" or "misc fixes"
-- The body holds only what the diff does not show: motivation, constraints, impact; no file list
-- A PR description states the final behaviour and the trade-offs a reviewer cannot recover from the diff; no Summary,
-  Changes, Test plan template, no intermediate states that were never merged
-- Never write `#N` or `owner/repo#N` in a commit message, issue or PR text, however it is passed (`-m`, `--body`,
-  `gh`): GitHub posts it to that issue's timeline for good. Name the issue in words or as the full URL in backticks.
-  A document inside a repository may use the short form; only commits, issues and PRs are parsed
+- Follow the language and the format that the repository already uses. Read `git log` before you write
+- Make the title say what changed. Do not use "cleanup" or "misc fixes"
+- Put in the body only what the diff does not show: motivation, constraints, impact. Do not list the files
+- In a PR description, state the final behaviour and the trade-offs that a reviewer cannot get from the diff. Do not
+  use a Summary, Changes and Test plan template. Do not describe intermediate states that were never merged
+- Do not write `#N` or `owner/repo#N` in a commit message, an issue or a PR, however the text gets there (`-m`,
+  `--body`, `gh`). GitHub adds the reference to the timeline of that issue permanently. Name the issue in words, or
+  give the full URL in backticks. A document inside a repository can use the short form, because GitHub parses only
+  commits, issues and PRs
 
-## Text models read
+## Text agents read
 
-AGENTS.md, CLAUDE.md, prompts, skills and memory files are read by models, which follow them literally, so:
+Agents read AGENTS.md, CLAUDE.md, prompts, skills and memory files, and follow them literally. Therefore:
 
-- Write them in English (see the language table in SKILL.md); a project's own rule wins
-- Give rules their reasons, so the model can judge the cases the text does not cover
-- Keep hard numbers, "must", "never" and capitals for real hard constraints; anything else gets over-applied
+- Write this text in English (see the language table in SKILL.md). A rule of the project takes precedence
+- Give each rule its reason, so the agent can judge the cases that the text does not cover
+- Keep hard numbers, "must", "never" and capitals for real hard constraints. An agent applies any other emphasis too
+  widely
 - Next to a prohibition, say what to do instead
-- Examples get copied: vary the domain, or say which point the example shows
-- A prompt for review, checking or verification gets plain instructions and permission to say "not sure", no expert
-  persona: a persona makes the model sound certain rather than be right
-- Leave out what the model does by default; what a script, check or test can guarantee goes there, not into text read
-  every time
-- Guidance meant for small models goes where they act: the good shape as the default in a helper, and a line in a
-  tool's output that says what to write, not more prose they never open. The first line of a tool's output is the
-  whole answer to a small model, so a denial printed before the hit is read as the answer. A guard for a small model
-  must not cost a capable one context: a line printed once when it matters passes, permanent prose every agent
-  carries does not
-- A skill's description says when to use it; it decides whether the instructions get loaded
+- Agents copy examples. Use examples from different domains, or say which point an example shows
+- For a prompt that reviews, checks or verifies, give plain instructions and permission to say "not sure". Do not give
+  an expert persona, because a persona makes the agent sound certain, not be right
+- Leave out what an agent does by default. If a script, a check or a test can guarantee a rule, put the rule there,
+  not in text that agents read every time
+- The description of a skill says when to use the skill. The description decides whether the agent loads the
+  instructions
 
-A memory file holds the rule, fact or pointer and why it holds. The first line is what to do; `Why:` is one or two
-sentences of reason, stated as a reason, not as an incident. Leave out dates, session events and how it was learned
-("on <date> the user found ...", "I tested ... and was corrected"); open items are listed without "as of" dates. The
-index line says when to open the file. A dated anecdote costs reading time and tells the agent nothing it acts on.
+Some agents run on small models. For them:
 
-## Wording
+- Put the guidance where a small model acts. Make the correct form the default of a helper. Put a line in the output
+  of the tool that says what to write. A small model does not open additional prose
+- A small model takes the first line of a tool's output as the whole answer. If a denial comes before the hit, the
+  small model reads the denial as the answer
+- A guard for a small model must not take space in the context of a capable model. A line that the tool prints once,
+  when it matters, is acceptable. Permanent prose that every agent carries is not acceptable
 
-- When the tone is hard to get, write two or three variants in different registers and assemble the sentences that
-  work, rather than polishing one draft; the right sentences are usually already scattered across the versions
-- Go nearer to ASD-STE100 than conversation does (see SKILL.md), still without its dictionary: one concept keeps one
-  name throughout; active voice and direct verbs, "delete the cache", not "perform a deletion operation on the cache"
-- No exclamation marks, slogans, or unbacked words such as "powerful", "seamless", "one-click"
-- Punctuation and spacing between Chinese and Latin text follow the file's existing habit
+A memory file holds a rule, a fact or a pointer, and the reason that it holds. The first line says what to do.
+`Why:` gives the reason in one or two sentences, as a reason, not as an incident. The index line says when to open
+the file.
+
+Leave out dates, session events and how the fact was learned ("on <date> the user found ...", "I tested ... and was
+corrected"). List open items without "as of" dates. A dated story takes time to read and gives the agent nothing to
+act on.

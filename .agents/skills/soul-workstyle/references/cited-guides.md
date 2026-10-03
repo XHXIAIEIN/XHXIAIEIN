@@ -1,20 +1,25 @@
-# A guide or project the user cites
+# A guide or project that the user cites
 
 ## A guide or best-practice page
 
-Read the cited guide in full, from the page itself rather than memory of it (the `.md` URL of a Mintlify site
-returns raw markdown), and go through it heading by heading against the thing being built. For each heading: what the
-work does today, the evidence (a measurement, a trace, a file), and either the change it leads to or the reason it
-leads to none. "Considered and not done" holds only with a reason grounded in the project's evidence.
+Read the cited guide in full, from the page itself, not from memory. On a Mintlify site, the `.md` URL gives the raw
+markdown. Compare the guide with the thing you build, one heading at a time. Make a table with one row for each
+heading and three columns:
 
-Put that table in the project's decision record if it keeps one, and summarize it in the reply.
+- what the work does today
+- the evidence: a measurement, a trace or a file
+- the change that the heading leads to, or the reason that it leads to no change
 
-The user wants to see every heading weighed, not a checklist mined from the page; the headings a first pass skips are
-where real defects turn up.
+"Considered and not done" is valid only with a reason that rests on evidence from the project.
 
-## A project or tool the user shares
+If the project keeps a decision record, put the table there. Summarize the table in the report.
 
-Read it for how it works and what transfers, not for whether to adopt it. Judge relevance by the structure of the
-problem it solves, not its subject: a game tool can carry a pattern for a data pipeline. Before calling something
-"already covered", compare at the level of implementation, since two things with the same name often work
-differently.
+The user wants to see every heading considered, not a checklist taken from the page. Real defects are often under
+the headings that a first pass skips.
+
+## A project or tool that the user shares
+
+Read it to learn how it works and what can transfer to the current work, not to decide whether to adopt it. Judge
+its relevance by the structure of the problem that it solves, not by its subject: a game tool can contain a pattern
+for a data pipeline. Before you say that something is "already covered", compare the two at the level of the
+implementation, because two things with the same name often work differently.
