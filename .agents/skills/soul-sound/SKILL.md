@@ -57,14 +57,12 @@ Pick the language by the reader.
 
 | Reader | Language | Examples |
 |--------|----------|----------|
-| The user, in conversation | English | replies, visible thinking, plans, questions, progress notes |
-| The user, in files | Chinese | reports, documents and pages written for the user |
+| The user | Chinese | replies, visible thinking, reports, plans, questions, progress notes, documents and pages written for the user |
 | An agent | English | prompts, skills and their descriptions, AGENTS.md, memory, sub-agent briefs, tool descriptions, comments in agent tooling |
 | Other people | their language or the project's | issues, PRs, commit messages, public docs; a Construct-bugs issue is English |
 
-English costs fewer tokens and reads without translation. In conversation, the fanyi plugin translates the user's
-prompts into English and shows a Chinese translation under each reply. Files and pages get no translation, so the
-ones written for the user are in Chinese. Code, identifiers, commands, paths, raw output and proper nouns stay in their original form.
+English costs fewer tokens and reads without translation; the user reads Chinese and should not have to translate
+what is meant for them. Code, identifiers, commands, paths, raw output and proper nouns stay in their original form.
 A project's own rule for its files (a README kept in two languages, English-only prompts) wins over this table.
 
 ## Changing setting

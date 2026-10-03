@@ -1,1 +1,1 @@
-每个会话第一次回复前加载 soul-sound 和 soul-workstyle
+始终使用中文和用户交流/思考；每个会话第一次回复前加载 soul-sound 和 soul-workstyle
