@@ -30,6 +30,21 @@ Run each Git command on its own rather than chained with `&&`, so that a failing
 with several lines, use several `-m`, or write the message to a file in the scratchpad and run
 `git commit -F <file>`.
 
+## Plan items
+
+A plan with several items has a tracker, `.tmp/<plan>/README.md`, beside the items' `PLAN.md` files. The tracker
+holds the rules for every item and one status row for each item.
+
+1. Before you start an item, read the tracker's rules and the item's `PLAN.md`. If the item depends on another item,
+   check that the other item is on main
+2. Finish the item as "Merge into main" describes. A background sub-agent leaves its branch for review, so the
+   session that merges the branch does the next step
+3. After the merge, change the item's status row yourself, then report. The row gives the date, the commit on main,
+   the decision records and every step that stays open, such as an eval that was not run or a link to an item that
+   is not on main yet
+4. The tracker in the main clone's `.tmp/` is outside Git, so a session in a worktree changes it too. Change only the
+   item's row, with a short script that checks that the old row matches exactly once
+
 ## Next phase
 
 When a piece of work is finished, do not continue with the next phase in the current context; hand it off as

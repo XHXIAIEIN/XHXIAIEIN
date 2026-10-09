@@ -48,5 +48,14 @@ the current session.
 
 ## Creating a card
 
-Write the card's prompt like a sub-agent's prompt, so that it stands alone. Its title and description are for the
+Write the card's prompt like a sub-agent's prompt, so that it stands alone. If the work has a `PLAN.md`, give its
+absolute path and tell the new session to read it first. Its title and description are for the
 user, so write them in Chinese: the title says what is to be done, and the description says why the work arises now.
+
+## A plan with several items
+
+When a plan splits into items that separate sessions do, write a tracker, `.tmp/<plan>/README.md`, and give each item
+its own folder with a `PLAN.md`. The tracker starts with the rules for every item: where to work, the checks, the
+report format and who merges. A table follows with the columns Id, Folder, Depends on, Route and Status. The prompt
+or card of each item gives the tracker's absolute path and says that the session changes its own row, as
+[wrap-up.md](wrap-up.md) "Plan items" describes.

@@ -1,6 +1,6 @@
 ---
 name: soul-workstyle
-description: How to work, covering the size of a task, where to change things, where files go, how to finish, how to hand off out-of-scope work and how to build interfaces. Load it before the first reply of every session. Then read the matching reference before you change files in a repository, and before you create, download, generate, replace or delete a file or add a hook, agent, skill or memory. Also read the matching reference when work on a branch is done and you are about to report it, or when you hand off out-of-scope work or the next phase. The same holds when the user cites a guide or shares a project to learn from, before a web action that needs the user's login, and when you design or build an interface. It applies even when the user does not mention these cases.
+description: How to work, covering the size of a task, where to change things, where files go, how to finish, how to hand off out-of-scope work and how to build interfaces. Load it before the first reply of every session. Then read the matching reference before you change files in a repository, and before you create, download, generate, replace or delete a file or add a hook, agent, skill or memory. Also read the matching reference when work on a branch is done and you are about to report it, when you start or finish an item of a written plan, when you hand off out-of-scope work or the next phase, and before you move a shared folder, stop or restart a service or start a process that holds the GPU. The same holds when the user cites a guide or shares a project to learn from, before a web action that needs the user's login, and when you design or build an interface. It applies even when the user does not mention these cases.
 ---
 
 # How to work
@@ -29,7 +29,10 @@ Where the project has its own conventions, follow them; this file covers what th
 
   Do not reach the same effect by other means, such as another language or a script file, because a guard that an
   agent bypasses protects nothing
-- On a long task, restate the goal with the task tools, so that the goal survives context compression
+- When a task has several phases or will fill most of the context, do not start it in the current session. Write the
+  plan to `.tmp/<task>/PLAN.md`: the goal, the steps, the files, the open decisions and the checks. Then hand it to a
+  new session as [references/delegation.md](references/delegation.md) describes, because a fresh context executes a
+  written plan better than a compressed one
 - When the user corrects how you work, record the pattern in memory, or in this file if it holds in every project
 
 ## Running things
@@ -38,6 +41,9 @@ If a command normally finishes within seconds, give it a timeout of 60 to 120 s 
 the command and in the waits written into a tool. A hung run costs the user the whole timeout, and a long wait hides the
 hang instead of reporting it.
 
+- Give `rm` targets that the permission check can resolve: a literal absolute path, or `"${VAR:?}"/...` for a path in
+  a variable. A bare glob after `cd` (`rm -rf *`) or a plain `"$VAR"/*` stops the whole command for the
+  user's approval, because the check cannot tell what it deletes
 - Split a batch into runs that each fit in the timeout, instead of running it in the background and waiting on it
 - Size the waits in a tool to the measured normal case plus a margin, and make the tool fail with a message when a
   wait runs out. A rerun then handles the rare slow case
@@ -56,8 +62,12 @@ When one of these cases applies, read its reference first:
 - When you create, download, generate, replace, overwrite or delete a file, or add a hook, an agent, a skill or a
   memory: [references/files.md](references/files.md). Its main rules: keep intermediate files out of the project
   root, keep material that must not be public out of the repository, and never delete the user's files outright
-- When work on a branch is done and you are about to report it: [references/wrap-up.md](references/wrap-up.md).
-  Commit the finished work and merge it into main; this rule takes precedence over "commit only when asked"
+- When work on a branch is done and you are about to report it, or when you start or finish an item of a written
+  plan: [references/wrap-up.md](references/wrap-up.md). Commit the finished work and merge it into main; this rule
+  takes precedence over "commit only when asked". A plan item ends with its status row in the tracker
+- Before you move, rename or delete a folder that other sessions may use, stop or restart a service that you did not
+  start, or start a process that holds the GPU, a port or a large download:
+  [references/sessions.md](references/sessions.md). Register in `~/.claude/SESSIONS.md` first
 - When something out of scope is worth doing separately, or the next phase is ready to hand off:
   [references/delegation.md](references/delegation.md). A small task goes to a background sub-agent that you start,
   not to a card that needs a click from the user
