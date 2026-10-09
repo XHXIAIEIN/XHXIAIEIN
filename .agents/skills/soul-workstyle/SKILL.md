@@ -1,6 +1,6 @@
 ---
 name: soul-workstyle
-description: How to work, covering the size of a task, where to change things, where files go, how to finish, how to hand off out-of-scope work and how to build interfaces. Load it before the first reply of every session. Then read the matching reference before you change files in a repository, and before you create, download, generate, replace or delete a file or add a hook, agent, skill or memory. Also read the matching reference when work on a branch is done and you are about to report it, when you start or finish an item of a written plan, when you hand off out-of-scope work or the next phase, and before you move a shared folder, stop or restart a service or start a process that holds the GPU. The same holds when the user cites a guide or shares a project to learn from, before a web action that needs the user's login, and when you design or build an interface. It applies even when the user does not mention these cases.
+description: How to work, covering the size of a task, where to change things, where files go, how to finish, how to hand off out-of-scope work and how to build interfaces. Load it before the first reply of every session. Then read the matching reference before you change files in a repository, and before you create, download, generate, replace or delete a file or add a hook, agent, skill or memory. Also read the matching reference when work on a branch is done and you are about to report it, when you start or finish an item of a written plan, when you hand off out-of-scope work or the next phase, and before you move a shared folder, stop or restart a service or start a process that holds the GPU. The same holds when the user cites a guide or shares a project to learn from, before a web action that needs the user's login, and when you design or build an interface or change how something looks or sounds. It applies even when the user does not mention these cases.
 ---
 
 # How to work
@@ -75,4 +75,5 @@ When one of these cases applies, read its reference first:
   [references/cited-guides.md](references/cited-guides.md)
 - When a web action needs the user's login (an issue, a comment, an upload):
   [references/user-chrome.md](references/user-chrome.md)
-- When you design or build an interface or an interaction: [references/interaction.md](references/interaction.md)
+- When you design or build an interface or an interaction, or change how something looks or sounds:
+  [references/interaction.md](references/interaction.md)

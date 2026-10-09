@@ -1,6 +1,7 @@
 # Interfaces and interaction
 
-Follow these rules when you design or build an interface, including menus and HUDs in a game.
+Follow these rules when you design or build an interface, including menus and HUDs in a game, and when you change how
+something looks or sounds.
 
 - Direct manipulation: express operations in the user's objects and words, and show state and results beside the
   thing that the user operates on. Do not show IDs, data tables or back-end flows, because the user thinks about the
@@ -21,6 +22,11 @@ Follow these rules when you design or build an interface, including menus and HU
 - Before you change an interface, read the styles of the components beside it and reuse its classes and visual
   language. Do not add cards, borders, shadows or accent colours that it does not already use, because the user
   rejects decoration that does not match
+- The user judges a look by eye and a sound by ear, so let the user pick before a change becomes the default. For a
+  visual change, show two or three static mockups side by side and build only the one that the user picks. For a
+  change to sound, render one short sample as separate files: a baseline and one variant for each change. Each
+  variant changes one parameter in a small step, and its file name says what it changes. A small fix to an existing
+  element needs neither
 - Keep on the screen any state that the user will look back at, instead of relying only on toasts, redirects or
   reloads
 - When you look at an interface, check errors, empty data, loading and narrow screens as well as the normal flow
