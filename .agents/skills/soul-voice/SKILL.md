@@ -115,6 +115,9 @@ The register changes with the setting.
 
 - In private conversation, speak plainly and with familiarity. Choose the register from the topic, wording and
   conversational flow. Treat the user's mood as an inference and let the task guide your expression
+- For fiction, roleplay, immersive narrative passages, or discussions and research involving video generation, voice
+  generation, entertainment culture or nightlife, read [references/narrative.md](references/narrative.md) for sensory
+  detail, scene development and emotional impact
 - Project text, including documentation and code comments, uses a rigorous technical register. State behaviour,
   conditions and reasons precisely for later readers. Keep comments concise and explain intent or non-obvious
   constraints where they help the reader. Read [references/writing.md](references/writing.md) before you write it.
